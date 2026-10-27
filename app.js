@@ -223,9 +223,8 @@
     var withEd = route.ed === "adria";
     var slides = feat.map(function (a, i) {
       return '<article class="slide" id="slide-' + i + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " / " + feat.length + '"' + (i ? " hidden" : "") + ">" +
-        '<a class="cover" href="#story-' + a.id + '" tabindex="-1">' + cover(a, { w: 1200, credit: true }) + "</a>" +
-        '<div class="slide__text">' + kicker(a, withEd) + '<a href="#story-' + a.id + '"><h2 class="h1">' + esc(L(a).t) + "</h2></a>" +
-        '<p class="dek">' + esc(L(a).d) + "</p>" + meta(a) + "</div></article>";
+        '<a class="lead" href="#story-' + a.id + '"><span class="cover">' + cover(a, { w: 1000, credit: true }) + '</span><span class="lead__text">' + kicker(a, withEd) +
+        '<span class="h2">' + esc(L(a).t) + '</span><span class="dek dek--sm">' + esc(L(a).d) + "</span>" + meta(a) + "</span></a></article>";
     }).join("");
     heroFeat = feat; heroWithEd = withEd;
     var ctrl = nextHTML(0);
@@ -233,10 +232,9 @@
       return '<li><a href="#story-' + a.id + '"><time class="num">' + clock(a.mins) + '</time><span><span class="kicker">' + esc(L(SEC[a.sec])) + (withEd && a.ed !== "adria" ? " · " + ED[a.ed].code : "") + '</span><span class="h3">' + esc(L(a).t) + "</span></span></a></li>";
     }).join("");
     return '<section class="hero">' +
-      '<div class="carousel" id="carousel" role="region" aria-roledescription="carousel" aria-label="' + esc(t().carousel) + '" style="--n:' + feat.length + '">' +
-      '<div class="slides" aria-live="off">' + slides + "</div>" +
-      '<div class="car-nav"><button data-step="-1" aria-label="' + esc(t().prev) + '">←</button><button data-step="1" aria-label="' + esc(t().next) + '">→</button></div>' +
-      '<div class="car-ctrl">' + ctrl + "</div></div>" +
+      '<div class="hero__main carousel" id="carousel" role="region" aria-roledescription="carousel" aria-label="' + esc(t().carousel) + '">' +
+      '<div class="sec-head"><h2>' + esc(t().carousel) + '</h2><div class="car-arrows"><button data-step="-1" aria-label="' + esc(t().prev) + '">←</button><button data-step="1" aria-label="' + esc(t().next) + '">→</button></div></div>' +
+      '<div class="stories"><div class="slides" aria-live="off">' + slides + '</div><ul class="side car-ctrl">' + ctrl + "</ul></div></div>" +
       '<aside class="latest" aria-labelledby="latest-h"><div class="sec-head"><h2 id="latest-h">' + esc(t().latest) + "</h2></div><ol>" + latest + "</ol></aside></section>";
   }
 
@@ -244,9 +242,9 @@
   var heroFeat = [], heroWithEd = false;
   function nextHTML(cur) {
     var n = heroFeat.length, out = "";
-    for (var k = 1; k <= Math.min(3, n - 1); k++) {
+    for (var k = 1; k <= Math.min(4, n - 1); k++) {
       var j = (cur + k) % n, a = heroFeat[j];
-      out += '<button data-go="' + j + '" aria-controls="slide-' + j + '"><span class="cover nx__img">' + cover(a, { w: 320 }) + '</span><span class="nx__t">' + kicker(a, heroWithEd) + '<span class="h3">' + esc(L(a).t) + "</span></span></button>";
+      out += '<li><button class="item" data-go="' + j + '" aria-controls="slide-' + j + '"><span class="item__text">' + kicker(a, heroWithEd) + '<span class="h3">' + esc(L(a).t) + "</span>" + meta(a) + '</span><span class="cover item__img">' + cover(a, { w: 320 }) + "</span></button></li>";
     }
     return out;
   }
