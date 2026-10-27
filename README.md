@@ -5,7 +5,7 @@ Business news platform for economy, finance, production and energy across the We
 - **ExpoBalkan Adria** — the regional front page (all editions)
 - **Editions** — Bosnia & Herzegovina (BIH), Serbia (SRB), Montenegro (MNE), North Macedonia (MKD). Same design, content filtered to that country. Chosen from the menu (EB icon + code).
 - **Masthead** — menu, search, popular, latest, newsletter on the left; type logo in the middle; subscribe and MNE/EN on the right.
-- **Languages** — Montenegrin (MNE) and English (EN), switch at the top right. White/dark switch is in the menu.
+- **Languages** — Montenegrin (MNE) and English (EN) everywhere; Macedonian (MK, Cyrillic) on the North Macedonia edition. Switch at the top right. White/dark switch is in the menu.
 
 ## Run it
 
@@ -24,6 +24,7 @@ To publish with GitHub Pages: Settings → Pages → Deploy from branch → `mai
 | `index.html` | Page shell: top bar, masthead, edition rail, section nav, main, newsletter, footer, menu drawer |
 | `styles.css` | Design tokens (colours, type), layout, light and dark theme, edition colours |
 | `data.js` | Editions, sections, market strip and all articles in MNE + EN |
+| `i18n-mk.js` | Macedonian translations: interface, editions, sections and every article |
 | `app.js` | Routing, rendering, hero carousel, menu drawer, language switch |
 
 ## Routes

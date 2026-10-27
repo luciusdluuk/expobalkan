@@ -25,6 +25,7 @@
       keyFig: "Ključni pokazatelj", newsroom: "Redakcija",
       body2: "Redakcija ExpoBalkana prati ovu temu kroz razgovore s kompanijama, institucijama i analitičarima u regionu. U narednim danima objavićemo detaljnu analizu sa podacima i izjavama sagovornika.",
       body3: "Za kompanije koje posluju u regionu ovo je signal da prate razvoj događaja i planiraju na vrijeme: promjene u propisima, troškovima i tražnji obično stižu brže nego što statistika pokaže.",
+      editedIn: "Trenutno se uređuje u Crnoj Gori, sa dopisnicima iz cijelog regiona i Evrope",
       related: "Povezano", home: "Naslovna", lang: "Jezik", photo: "Foto:", theme: "Izgled", white: "Bijela", dark: "Tamna",
       search: "Pretraga", searchPh: "Pretražite vijesti", noResults: "Nema rezultata za", popular: "Popularno", latestNav: "Najnovije", newsletter: "Newsletter",
       mostRead: "Najčitanije", reads: "čitanja", allLatest: "Sve najnovije vijesti", chooseEd: "Izaberite ediciju",
@@ -46,6 +47,7 @@
       keyFig: "Key figure", newsroom: "Newsroom",
       body2: "ExpoBalkan's newsroom is following this story through conversations with companies, institutions and analysts across the region. A full analysis with data and interviews will follow in the coming days.",
       body3: "For companies operating in the region, this is a signal to follow developments and plan early: changes in regulation, costs and demand usually arrive faster than the statistics show.",
+      editedIn: "Currently edited in Montenegro, with correspondents across the region and Europe",
       related: "Related", home: "Front page", lang: "Language", photo: "Photo:", theme: "Appearance", white: "White", dark: "Dark",
       search: "Search", searchPh: "Search stories", noResults: "No results for", popular: "Popular", latestNav: "Latest", newsletter: "Newsletter",
       mostRead: "Most read", reads: "reads", allLatest: "All the latest stories", chooseEd: "Choose an edition",
@@ -55,12 +57,15 @@
     }
   };
 
-  var lang = "me";
-  try { var saved = localStorage.getItem("eb-lang"); if (saved === "me" || saved === "en") lang = saved; } catch (e) {}
+  if (window.EB_MK_UI) T.mk = window.EB_MK_UI;
+  var lang = "me";   /* the reader's choice */
+  try { var saved = localStorage.getItem("eb-lang"); if (saved === "me" || saved === "en" || saved === "mk") lang = saved; } catch (e) {}
+  var cur = lang;    /* language actually shown: Macedonian only on the North Macedonia edition */
+  var LOCALE = { me: "sr-Latn-ME", en: "en-GB", mk: "mk-MK" };
   var theme = "light";
   try { if (localStorage.getItem("eb-theme") === "dark") theme = "dark"; } catch (e) {}
-  var t = function () { return T[lang]; };
-  var L = function (o) { return o[lang]; };
+  var t = function () { return T[cur]; };
+  var L = function (o) { return o[cur] || o.me; };
 
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
 
@@ -151,13 +156,13 @@
   /* ---------- chrome: utility bar, masthead, rails ---------- */
   function chrome(route) {
     var e = ED[route.ed];
-    var dateStr; try { dateStr = new Date().toLocaleDateString(lang === "me" ? "sr-Latn-ME" : "en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" }); } catch (x) { dateStr = new Date().toDateString(); }
+    var dateStr; try { dateStr = cur === "mk" ? mkDate(new Date()) : new Date().toLocaleDateString(LOCALE[cur], { weekday: "long", day: "numeric", month: "long", year: "numeric" }); } catch (x) { dateStr = new Date().toDateString(); }
     var tick = (D.tickers[route.ed] || []).map(function (k) {
       var cls = k[2].charAt(0) === "+" ? "up" : k[2].charAt(0) === "-" ? "down" : "";
       return '<span class="num"><b>' + k[0] + "</b>" + k[1] + ' <em class="' + cls + '" style="font-style:normal">' + (k[2] === "0.0" ? "0.0" : k[2]) + "%</em></span>";
     }).join("");
     document.getElementById("util").innerHTML =
-      '<div class="wrap"><span class="util__date">' + esc(dateStr) + ' · <time class="num" id="clock">' + clock(0) + '</time></span><div class="ticker" aria-label="Markets">' + tick + '</div><span aria-hidden="true"></span></div>';
+      '<div class="wrap"><span class="util__date">' + esc(dateStr) + ' · <time class="num" id="clock">' + clock(0) + '</time></span><div class="ticker" aria-label="Markets">' + tick + '</div><span class="util__note">' + esc(t().editedIn) + "</span></div>";
 
     var ic = function (d) { return '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">' + d + "</svg>"; };
     document.getElementById("mast").innerHTML =
@@ -176,7 +181,11 @@
   }
 
   function langToggle() {
-    return '<div class="lang" role="group" aria-label="' + esc(t().lang) + '"><button data-lang="me" aria-pressed="' + (lang === "me") + '">MNE</button><button data-lang="en" aria-pressed="' + (lang === "en") + '">EN</button></div>';
+    var opts = [["me", "MNE"], ["en", "EN"]];
+    if (curEd === "mkd") opts.push(["mk", "MK"]);
+    return '<div class="lang" role="group" aria-label="' + esc(t().lang) + '">' + opts.map(function (o) {
+      return '<button data-lang="' + o[0] + '" aria-pressed="' + (cur === o[0]) + '">' + o[1] + "</button>";
+    }).join("") + "</div>";
   }
 
   function themeToggle() {
@@ -312,7 +321,7 @@
     var withEd = route.ed === "adria";
     return listHead(route, t().mostRead) + '<ol class="rows">' + list.map(function (a, i) {
       return '<li><a class="row" href="#story-' + a.id + '"><span class="row__rank num">' + (i + 1) + '</span><span class="row__text">' + kicker(a, withEd) +
-        '<span class="h2">' + esc(L(a).t) + '</span><span class="dek dek--sm">' + esc(L(a).d) + '</span><span class="meta"><span class="num">' + reads(a).toLocaleString(lang === "me" ? "de-DE" : "en-GB") + " " + esc(t().reads) + "</span></span></span>" + thumb(a) + "</a></li>";
+        '<span class="h2">' + esc(L(a).t) + '</span><span class="dek dek--sm">' + esc(L(a).d) + '</span><span class="meta"><span class="num">' + reads(a).toLocaleString(cur === "en" ? "en-GB" : "de-DE") + " " + esc(t().reads) + "</span></span></span>" + thumb(a) + "</a></li>";
     }).join("") + "</ol>";
   }
 
@@ -367,7 +376,13 @@
     clearInterval(timer);
     if (!reduced) timer = setInterval(function () { if (!paused && !document.hidden && document.getElementById("carousel") === root) go(cur + 1); }, 7000);
   }
+  function mkDate(d) {
+    var days = ["недела", "понеделник", "вторник", "среда", "четврток", "петок", "сабота"];
+    var months = ["јануари", "февруари", "март", "април", "мај", "јуни", "јули", "август", "септември", "октомври", "ноември", "декември"];
+    return days[d.getDay()] + ", " + d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear();
+  }
   var timer = null;
+  var curEd = "adria";
 
   /* Drop any photo that can't load so the graphic cover shows through. */
   function wirePhotos() {
@@ -387,7 +402,9 @@
     var route = parse();
     document.documentElement.setAttribute("data-ed", route.ed);
     document.documentElement.setAttribute("data-theme", theme);
-    document.documentElement.lang = lang === "me" ? "cnr" : "en";
+    curEd = route.ed;
+    cur = lang === "mk" && route.ed !== "mkd" ? "me" : lang;
+    document.documentElement.lang = { me: "cnr", en: "en", mk: "mk" }[cur];
     var e = ED[route.ed];
     document.title = route.view === "art" ? L(route.art).t + " · ExpoBalkan" : "ExpoBalkan " + L(e);
     chrome(route);
