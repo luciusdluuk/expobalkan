@@ -25,7 +25,7 @@
       keyFig: "Ključni pokazatelj", newsroom: "Redakcija",
       body2: "Redakcija ExpoBalkana prati ovu temu kroz razgovore s kompanijama, institucijama i analitičarima u regionu. U narednim danima objavićemo detaljnu analizu sa podacima i izjavama sagovornika.",
       body3: "Za kompanije koje posluju u regionu ovo je signal da prate razvoj događaja i planiraju na vrijeme: promjene u propisima, troškovima i tražnji obično stižu brže nego što statistika pokaže.",
-      related: "Povezano", home: "Naslovna", lang: "Jezik", photo: "Foto:", theme: "Izgled", white: "Bijela", dark: "Tamna",
+      designBy: "Dizajn:", related: "Povezano", home: "Naslovna", lang: "Jezik", photo: "Foto:", theme: "Izgled", white: "Bijela", dark: "Tamna",
       search: "Pretraga", searchPh: "Pretražite vijesti", noResults: "Nema rezultata za", popular: "Popularno", latestNav: "Najnovije", newsletter: "Newsletter",
       mostRead: "Najčitanije", reads: "čitanja", allLatest: "Sve najnovije vijesti", chooseEd: "Izaberite ediciju",
       subTitle: "Pretplata", subText: "Neograničen pristup analizama, podacima i svim edicijama ExpoBalkana.", perMonth: "mjesečno",
@@ -46,7 +46,7 @@
       keyFig: "Key figure", newsroom: "Newsroom",
       body2: "ExpoBalkan's newsroom is following this story through conversations with companies, institutions and analysts across the region. A full analysis with data and interviews will follow in the coming days.",
       body3: "For companies operating in the region, this is a signal to follow developments and plan early: changes in regulation, costs and demand usually arrive faster than the statistics show.",
-      related: "Related", home: "Front page", lang: "Language", photo: "Photo:", theme: "Appearance", white: "White", dark: "Dark",
+      designBy: "Design:", related: "Related", home: "Front page", lang: "Language", photo: "Photo:", theme: "Appearance", white: "White", dark: "Dark",
       search: "Search", searchPh: "Search stories", noResults: "No results for", popular: "Popular", latestNav: "Latest", newsletter: "Newsletter",
       mostRead: "Most read", reads: "reads", allLatest: "All the latest stories", chooseEd: "Choose an edition",
       subTitle: "Subscribe", subText: "Unlimited access to ExpoBalkan analysis, data and every edition.", perMonth: "per month",
@@ -211,7 +211,7 @@
       "<div><h3>" + esc(t().editions) + "</h3><ul>" + D.editions.map(function (x) { return '<li><a href="#' + x.id + '">' + esc(L(x)) + "</a></li>"; }).join("") + "</ul></div>" +
       "<div><h3>" + esc(t().sections) + "</h3><ul>" + D.sections.map(function (s) { return '<li><a href="#' + route.ed + "-" + s.id + '">' + esc(L(s)) + "</a></li>"; }).join("") + "</ul></div>" +
       "<div><h3>" + esc(t().company) + "</h3><ul><li>" + esc(t().about) + "</li><li>" + esc(t().advertise) + "</li><li>" + esc(t().careers) + "</li><li>" + esc(t().contact) + "</li></ul></div></div>" +
-      '<div class="foot-base"><div class="wrap"><span>© 2026 ExpoBalkan</span><span>' + esc(t().proto) + "</span></div></div>";
+      '<div class="foot-base"><div class="wrap"><span>© 2026 ExpoBalkan · ' + esc(t().designBy) + ' <a class="credit-link" href="https://claude.ai/artifact/9LKErAkR5TjxR2tFou3hLS" target="_blank" rel="noopener">Luka Džarić ↗</a></span><span>' + esc(t().proto) + "</span></div></div>";
   }
 
   /* ---------- views ---------- */

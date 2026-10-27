@@ -58,3 +58,5 @@ Add an object to `articles` in `data.js`:
 - Edition colours come from the EB icon set: Adria neutral, BIH blue/yellow, SRB red/blue, MNE crimson/gold, MKD red/yellow.
 
 Photos are from Unsplash (free under the Unsplash License) and are credited on each story. All article content is sample content for the prototype.
+
+Design: Luka Džarić.
