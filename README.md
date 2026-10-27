@@ -52,4 +52,4 @@ Add an object to `articles` in `data.js`:
 - Logo: ExpoBalkan wordmark in Inter (Neue Haas direction) with the EB icon.
 - Edition colours come from the EB icon set: Adria neutral, BIH blue/yellow, SRB red/blue, MNE crimson/gold, MKD red/yellow.
 
-All article content is sample content for the prototype.
+Photos are from Unsplash (free under the Unsplash License) and are credited on each story. All article content is sample content for the prototype.

@@ -21,6 +21,33 @@ window.EB_DATA = {
     { id: "biz",     me: "Biznis",      en: "Business" }
   ],
 
+
+  /* Photos: Unsplash, free under the Unsplash License (https://unsplash.com/license). */
+  photos: {
+    kotor:    { id: "photo-1614122027743-50a9e6e8002f", by: "Olga Brajnovic" },
+    solar:    { id: "photo-1509391366360-2e959784a276", by: "American Public Power Association" },
+    port:     { id: "photo-1590497008432-598f04441de8", by: "Timelab" },
+    belgrade: { id: "photo-1608816747977-4d303f476571", by: "Nikola Cirkovic" },
+    sarajevo: { id: "photo-1680220700316-41ec6aa2f805", by: "Sporisevic Photography" },
+    ohrid:    { id: "photo-1653389167363-fbef327f93bd", by: "Adventure Albania" },
+    wind:     { id: "photo-1786708919984-6a0925c14e2e", by: "Mikael Padeiro" },
+    cars:     { id: "photo-1777383975764-bec6f5cabf00", by: "Lilian Do Khac" },
+    trading:  { id: "photo-1773266110858-acb9b6c43b15", by: "Daniel" },
+    euro:     { id: "photo-1621280336935-ed7cae618aac", by: "Ibrahim Boran" },
+    vineyard: { id: "photo-1543418219-44e30b057fea", by: "Boudewijn Boer" },
+    welding:  { id: "photo-1738162837408-5fbf53f0b97a", by: "Cemrecan Yurtman" },
+    cranes:   { id: "photo-1684497404598-6e844dff9cde", by: "novila misastra" },
+    office:   { id: "photo-1774600134168-b9ebd714e4e1", by: "Fiqih Alfarish" }
+  },
+  /* Which photo each article uses (falls back to the graphic cover if a photo can't load). */
+  articlePhotos: {
+    a1: "cranes", a2: "wind", a3: "euro", a4: "cars", a5: "trading",
+    b1: "solar", b2: "welding", b3: "euro", b4: "sarajevo", b5: "office",
+    s1: "cars", s2: "trading", s3: "belgrade", s4: "vineyard", s5: "euro",
+    m1: "kotor", m2: "wind", m3: "trading", m4: "port", m5: "office", m6: "cranes",
+    k1: "welding", k2: "solar", k3: "euro", k4: "vineyard", k5: "ohrid"
+  },
+
   /* Market strip per edition (sample values) */
   tickers: {
     adria: [["BELEX15", "1,184.2", "+0.6"], ["SASX-10", "1,412.7", "+0.3"], ["MONEX", "21,940", "-0.2"], ["MBI10", "8,033.5", "+0.9"], ["EUR/RSD", "117.16", "0.0"], ["BRENT", "$71.40", "-1.1"]],

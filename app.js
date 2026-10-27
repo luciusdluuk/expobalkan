@@ -25,7 +25,7 @@
       keyFig: "Ključni pokazatelj", newsroom: "Redakcija",
       body2: "Redakcija ExpoBalkana prati ovu temu kroz razgovore s kompanijama, institucijama i analitičarima u regionu. U narednim danima objavićemo detaljnu analizu sa podacima i izjavama sagovornika.",
       body3: "Za kompanije koje posluju u regionu ovo je signal da prate razvoj događaja i planiraju na vrijeme: promjene u propisima, troškovima i tražnji obično stižu brže nego što statistika pokaže.",
-      related: "Povezano", home: "Naslovna", lang: "Jezik"
+      related: "Povezano", home: "Naslovna", lang: "Jezik", photo: "Foto:", theme: "Izgled", white: "Bijela", dark: "Tamna"
     },
     en: {
       latest: "Latest", numbers: "Numbers of the day", editions: "Editions", allEditions: "All editions",
@@ -41,12 +41,14 @@
       keyFig: "Key figure", newsroom: "Newsroom",
       body2: "ExpoBalkan's newsroom is following this story through conversations with companies, institutions and analysts across the region. A full analysis with data and interviews will follow in the coming days.",
       body3: "For companies operating in the region, this is a signal to follow developments and plan early: changes in regulation, costs and demand usually arrive faster than the statistics show.",
-      related: "Related", home: "Front page", lang: "Language"
+      related: "Related", home: "Front page", lang: "Language", photo: "Photo:", theme: "Appearance", white: "White", dark: "Dark"
     }
   };
 
   var lang = "me";
   try { var saved = localStorage.getItem("eb-lang"); if (saved === "me" || saved === "en") lang = saved; } catch (e) {}
+  var theme = "light";
+  try { if (localStorage.getItem("eb-theme") === "dark") theme = "dark"; } catch (e) {}
   var t = function () { return T[lang]; };
   var L = function (o) { return o[lang]; };
 
@@ -78,7 +80,7 @@
   function rng(seed) { var s = 0; for (var i = 0; i < seed.length; i++) s = (s * 31 + seed.charCodeAt(i)) >>> 0; return function () { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; }; }
 
   /* Editorial cover: a data graphic in the edition's colours, keyed to the section. */
-  function cover(a) {
+  function cover(a, opts) {
     var e = ED[a.ed], r = rng(a.id), W = 1600, H = 900, g = "", i;
     var faint = 'fill="' + e.ink + '" fill-opacity="0.12"', acc = 'fill="' + e.bar + '"';
     if (a.sec === "econ") {
@@ -104,7 +106,19 @@
       for (i = 9; i > 0; i--) g += '<circle cx="1240" cy="420" r="' + (i * 52) + '" fill="none" stroke="' + (i === 3 ? e.bar : e.ink) + '" stroke-opacity="' + (i === 3 ? 1 : 0.16) + '" stroke-width="' + (i === 3 ? 10 : 4) + '"/>';
     }
     var label = esc(L(a.fig));
-    return '<svg viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="xMidYMid slice" role="img" aria-label="' + esc(a.fig.v) + " · " + label + '">' +
+    return graphic(a, W, H, e, g, label) + photo(a, opts && opts.w || 640, opts && opts.credit);
+  }
+
+  /* Photo layered over the graphic; if it can't load, the graphic shows instead. */
+  function photo(a, w, credit) {
+    var k = D.articlePhotos && D.articlePhotos[a.id], p = k && D.photos[k];
+    if (!p) return "";
+    return '<span class="ph"><img alt="" loading="lazy" decoding="async" src="https://images.unsplash.com/' + p.id + "?auto=format&fit=crop&w=" + w + '&q=70">' +
+      (credit ? '<span class="credit">' + esc(t().photo) + " " + esc(p.by) + " / Unsplash</span>" : "") + "</span>";
+  }
+
+  function graphic(a, W, H, e, g, label) {
+    return '<svg viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="xMinYMid slice" role="img" aria-label="' + esc(a.fig.v) + " · " + label + '">' +
       '<rect width="' + W + '" height="' + H + '" fill="' + e.bg + '"/>' + g +
       '<rect x="0" y="' + (H - 18) + '" width="' + W + '" height="18" fill="' + e.bar + '"/>' +
       '<text x="80" y="120" fill="' + e.ink + '" fill-opacity="0.8" style="font:600 30px Inter,Arial,sans-serif;letter-spacing:.24em">EB · ' + e.code + " · " + esc(L(SEC[a.sec])).toUpperCase() + "</text>" +
@@ -132,7 +146,7 @@
       return '<span class="num"><b>' + k[0] + "</b>" + k[1] + ' <em class="' + cls + '" style="font-style:normal">' + (k[2] === "0.0" ? "0.0" : k[2]) + "%</em></span>";
     }).join("");
     document.getElementById("util").innerHTML =
-      '<div class="wrap"><span class="util__date">' + esc(dateStr) + '</span><div class="ticker" aria-label="Markets">' + tick + "</div>" + langToggle() + "</div>";
+      '<div class="wrap"><span class="util__date">' + esc(dateStr) + '</span><div class="ticker" aria-label="Markets">' + tick + "</div>" + themeToggle() + langToggle() + "</div>";
 
     document.getElementById("mast").innerHTML =
       '<div class="wrap">' +
@@ -157,6 +171,10 @@
     return '<div class="lang" role="group" aria-label="' + esc(t().lang) + '"><button data-lang="me" aria-pressed="' + (lang === "me") + '">MNE</button><button data-lang="en" aria-pressed="' + (lang === "en") + '">EN</button></div>';
   }
 
+  function themeToggle() {
+    return '<div class="lang" role="group" aria-label="' + esc(t().theme) + '"><button data-theme-set="light" aria-pressed="' + (theme === "light") + '">' + esc(t().white) + '</button><button data-theme-set="dark" aria-pressed="' + (theme === "dark") + '">' + esc(t().dark) + "</button></div>";
+  }
+
   function drawer(route) {
     var e = ED[route.ed];
     document.getElementById("drawer").innerHTML =
@@ -168,7 +186,7 @@
         return '<li><a href="#' + e.id + "-" + s.id + '">' + esc(L(s)) + "</a></li>";
       }).join("") + "</ul></div>" +
       "<div><h3>" + esc(t().company) + '</h3><ul><li><a href="#' + e.id + '">' + esc(t().about) + '</a></li><li><a href="#' + e.id + '">' + esc(t().advertise) + '</a></li><li><a href="#' + e.id + '">' + esc(t().contact) + "</a></li></ul></div>" +
-      "<div><h3>" + esc(t().lang) + "</h3>" + langToggle() + "</div>";
+      "<div><h3>" + esc(t().lang) + '</h3><div style="display:flex;gap:8px;flex-wrap:wrap">' + langToggle() + themeToggle() + "</div></div>";
   }
 
   function footer(route) {
@@ -189,12 +207,12 @@
     var withEd = route.ed === "adria";
     var slides = feat.map(function (a, i) {
       return '<article class="slide" id="slide-' + i + '" role="group" aria-roledescription="slide" aria-label="' + (i + 1) + " / " + feat.length + '"' + (i ? " hidden" : "") + ">" +
-        '<a class="cover" href="#story-' + a.id + '" tabindex="-1">' + cover(a) + "</a>" +
+        '<a class="cover" href="#story-' + a.id + '" tabindex="-1">' + cover(a, { w: 1200, credit: true }) + "</a>" +
         '<div class="slide__text">' + kicker(a, withEd) + '<a href="#story-' + a.id + '"><h2 class="h1">' + esc(L(a).t) + "</h2></a>" +
         '<p class="dek">' + esc(L(a).d) + "</p>" + meta(a) + "</div></article>";
     }).join("");
     var ctrl = feat.map(function (a, i) {
-      return '<button data-go="' + i + '" aria-controls="slide-' + i + '"' + (i === 0 ? ' aria-current="true"' : "") + '><span class="bar"><i></i></span><span class="t">' + esc(L(a).t) + "</span></button>";
+      return '<button data-go="' + i + '" aria-controls="slide-' + i + '"' + (i === 0 ? ' aria-current="true"' : "") + '><span class="n num">' + ("0" + (i + 1)).slice(-2) + '</span><span class="t">' + esc(L(a).t) + "</span></button>";
     }).join("");
     var latest = all.slice(0, 8).map(function (a) {
       return '<li><a href="#story-' + a.id + '"><time class="num">' + clock(a.mins) + '</time><span><span class="kicker">' + esc(L(SEC[a.sec])) + (withEd && a.ed !== "adria" ? " · " + ED[a.ed].code : "") + '</span><span class="h3">' + esc(L(a).t) + "</span></span></a></li>";
@@ -267,7 +285,7 @@
     return '<article class="article">' +
       '<nav class="crumbs" aria-label="Breadcrumb"><a href="#' + e.id + '">ExpoBalkan ' + esc(L(e)) + '</a><span>/</span><a href="#' + e.id + "-" + a.sec + '">' + esc(L(SEC[a.sec])) + "</a></nav>" +
       kicker(a) + '<h1 class="h1">' + esc(L(a).t) + '</h1><p class="dek">' + esc(L(a).d) + "</p>" + meta(a) +
-      '<div class="cover">' + cover(a) + "</div>" +
+      '<div class="cover">' + cover(a, { w: 1400, credit: true }) + "</div>" +
       '<div class="body"><p>' + esc(L(a).d) + "</p><p>" + esc(t().body2) + "</p><p><strong>" + esc(t().keyFig) + ":</strong> " + esc(a.fig.v) + " — " + esc(L(a.fig)) + ".</p><p>" + esc(t().body3) + "</p></div>" +
       '<p class="note">' + esc(t().proto) + "</p></article>" +
       gridHTML(rel, t().related, false);
@@ -277,29 +295,29 @@
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function carousel() {
     var root = document.getElementById("carousel"); if (!root) return;
-    var slides = root.querySelectorAll(".slide"), btns = root.querySelectorAll(".car-ctrl button"), n = slides.length, cur = 0;
-    if (reduced) root.classList.add("paused");
+    var slides = root.querySelectorAll(".slide"), btns = root.querySelectorAll(".car-ctrl button"), n = slides.length, cur = 0, paused = false;
     function go(i) {
       i = (i + n) % n;
       slides[cur].hidden = true; slides[i].hidden = false;
-      slides[i].classList.remove("is-in"); void slides[i].offsetWidth; slides[i].classList.add("is-in");
-      btns.forEach(function (b, k) {
-        b.classList.toggle("done", k < i);
-        if (k === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current");
-        var bar = b.querySelector(".bar"); bar.innerHTML = "<i></i>";
-        if (!reduced && k === i) bar.firstChild.addEventListener("animationend", function () { go(i + 1); });
-      });
+      btns.forEach(function (b, k) { if (k === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
       cur = i;
     }
     btns.forEach(function (b) { b.addEventListener("click", function () { go(+b.dataset.go); }); });
     root.querySelectorAll("[data-step]").forEach(function (b) { b.addEventListener("click", function () { go(cur + +b.dataset.step); }); });
     root.addEventListener("keydown", function (ev) { if (ev.key === "ArrowRight") go(cur + 1); if (ev.key === "ArrowLeft") go(cur - 1); });
-    if (!reduced) {
-      var pause = function () { root.classList.add("paused"); }, resume = function () { root.classList.remove("paused"); };
-      root.addEventListener("mouseenter", pause); root.addEventListener("mouseleave", resume);
-      root.addEventListener("focusin", pause); root.addEventListener("focusout", resume);
-      go(0);
-    }
+    root.addEventListener("mouseenter", function () { paused = true; }); root.addEventListener("mouseleave", function () { paused = false; });
+    root.addEventListener("focusin", function () { paused = true; }); root.addEventListener("focusout", function () { paused = false; });
+    clearInterval(timer);
+    if (!reduced) timer = setInterval(function () { if (!paused && !document.hidden && document.getElementById("carousel") === root) go(cur + 1); }, 7000);
+  }
+  var timer = null;
+
+  /* Drop any photo that can't load so the graphic cover shows through. */
+  function wirePhotos() {
+    document.querySelectorAll(".ph img").forEach(function (img) {
+      var drop = function () { var w = img.parentNode; if (w && w.parentNode) w.parentNode.removeChild(w); };
+      if (img.complete && !img.naturalWidth) drop(); else img.addEventListener("error", drop);
+    });
   }
 
   /* ---------- drawer behaviour ---------- */
@@ -311,6 +329,7 @@
   function render(scroll) {
     var route = parse();
     document.documentElement.setAttribute("data-ed", route.ed);
+    document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.lang = lang === "me" ? "cnr" : "en";
     var e = ED[route.ed];
     document.title = route.view === "art" ? L(route.art).t + " · ExpoBalkan" : "ExpoBalkan " + L(e);
@@ -319,6 +338,7 @@
     main.innerHTML = route.view === "art" ? artView(route) : route.view === "sec" ? secView(route) : homeView(route);
     document.getElementById("newsletter").innerHTML = nlHTML();
     carousel();
+    wirePhotos();
     var rail = document.querySelector(".eds .wrap"), act = rail && rail.querySelector('[aria-current="page"]');
     if (act) rail.scrollLeft = Math.max(0, act.offsetLeft - 16);
     closeDrawer();
@@ -327,6 +347,8 @@
 
   document.addEventListener("click", function (ev) {
     var l = ev.target.closest("[data-lang]");
+    var th = ev.target.closest("[data-theme-set]");
+    if (th) { theme = th.dataset.themeSet; try { localStorage.setItem("eb-theme", theme); } catch (e) {} render(false); return; }
     if (l) { lang = l.dataset.lang; try { localStorage.setItem("eb-lang", lang); } catch (e) {} render(false); return; }
     if (ev.target.closest("#burger")) { openDrawer(); return; }
     if (ev.target.closest("#drawer-close") || ev.target.closest("#scrim")) { closeDrawer(); return; }
