@@ -25,7 +25,6 @@
       keyFig: "Ključni pokazatelj", newsroom: "Redakcija",
       body2: "Redakcija ExpoBalkana prati ovu temu kroz razgovore s kompanijama, institucijama i analitičarima u regionu. U narednim danima objavićemo detaljnu analizu sa podacima i izjavama sagovornika.",
       body3: "Za kompanije koje posluju u regionu ovo je signal da prate razvoj događaja i planiraju na vrijeme: promjene u propisima, troškovima i tražnji obično stižu brže nego što statistika pokaže.",
-      editedIn: "Trenutno se uređuje u Crnoj Gori, sa dopisnicima iz cijelog regiona i Evrope",
       related: "Povezano", home: "Naslovna", lang: "Jezik", photo: "Foto:", theme: "Izgled", white: "Bijela", dark: "Tamna",
       search: "Pretraga", searchPh: "Pretražite vijesti", noResults: "Nema rezultata za", popular: "Popularno", latestNav: "Najnovije", newsletter: "Newsletter",
       mostRead: "Najčitanije", reads: "čitanja", allLatest: "Sve najnovije vijesti", chooseEd: "Izaberite ediciju",
@@ -47,7 +46,6 @@
       keyFig: "Key figure", newsroom: "Newsroom",
       body2: "ExpoBalkan's newsroom is following this story through conversations with companies, institutions and analysts across the region. A full analysis with data and interviews will follow in the coming days.",
       body3: "For companies operating in the region, this is a signal to follow developments and plan early: changes in regulation, costs and demand usually arrive faster than the statistics show.",
-      editedIn: "Currently edited in Montenegro, with correspondents across the region and Europe",
       related: "Related", home: "Front page", lang: "Language", photo: "Photo:", theme: "Appearance", white: "White", dark: "Dark",
       search: "Search", searchPh: "Search stories", noResults: "No results for", popular: "Popular", latestNav: "Latest", newsletter: "Newsletter",
       mostRead: "Most read", reads: "reads", allLatest: "All the latest stories", chooseEd: "Choose an edition",
@@ -162,7 +160,7 @@
       return '<span class="num"><b>' + k[0] + "</b>" + k[1] + ' <em class="' + cls + '" style="font-style:normal">' + (k[2] === "0.0" ? "0.0" : k[2]) + "%</em></span>";
     }).join("");
     document.getElementById("util").innerHTML =
-      '<div class="wrap"><span class="util__date">' + esc(dateStr) + ' · <time class="num" id="clock">' + clock(0) + '</time></span><div class="ticker" aria-label="Markets">' + tick + '</div><span class="util__note">' + esc(t().editedIn) + "</span></div>";
+      '<div class="wrap"><span class="util__date">' + esc(dateStr) + ' · <time class="num" id="clock">' + clock(0) + '</time></span><div class="ticker" aria-label="Markets">' + tick + '</div><span aria-hidden="true"></span></div>';
 
     var ic = function (d) { return '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">' + d + "</svg>"; };
     document.getElementById("mast").innerHTML =
