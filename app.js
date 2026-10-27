@@ -211,7 +211,7 @@
       "<div><h3>" + esc(t().editions) + "</h3><ul>" + D.editions.map(function (x) { return '<li><a href="#' + x.id + '">' + esc(L(x)) + "</a></li>"; }).join("") + "</ul></div>" +
       "<div><h3>" + esc(t().sections) + "</h3><ul>" + D.sections.map(function (s) { return '<li><a href="#' + route.ed + "-" + s.id + '">' + esc(L(s)) + "</a></li>"; }).join("") + "</ul></div>" +
       "<div><h3>" + esc(t().company) + "</h3><ul><li>" + esc(t().about) + "</li><li>" + esc(t().advertise) + "</li><li>" + esc(t().careers) + "</li><li>" + esc(t().contact) + "</li></ul></div></div>" +
-      '<div class="foot-base"><div class="wrap"><span>© 2026 ExpoBalkan · ' + esc(t().designBy) + ' <a class="credit-link" href="https://claude.ai/artifact/9LKErAkR5TjxR2tFou3hLS" target="_blank" rel="noopener">Luka Džarić ↗</a></span><span>' + esc(t().proto) + "</span></div></div>";
+      '<div class="foot-base"><div class="wrap"><span>© 2026 ExpoBalkan · ' + esc(t().designBy) + ' Luka Džarić</span><span>' + esc(t().proto) + "</span></div></div>";
   }
 
   /* ---------- views ---------- */
