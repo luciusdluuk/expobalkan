@@ -227,9 +227,8 @@
         '<div class="slide__text">' + kicker(a, withEd) + '<a href="#story-' + a.id + '"><h2 class="h1">' + esc(L(a).t) + "</h2></a>" +
         '<p class="dek">' + esc(L(a).d) + "</p>" + meta(a) + "</div></article>";
     }).join("");
-    var ctrl = feat.map(function (a, i) {
-      return '<button data-go="' + i + '" aria-controls="slide-' + i + '"' + (i === 0 ? ' aria-current="true"' : "") + '><span class="n num">' + ("0" + (i + 1)).slice(-2) + '</span><span class="t">' + esc(L(a).t) + "</span></button>";
-    }).join("");
+    heroFeat = feat; heroWithEd = withEd;
+    var ctrl = nextHTML(0);
     var latest = all.slice(0, 8).map(function (a) {
       return '<li><a href="#story-' + a.id + '"><time class="num">' + clock(a.mins) + '</time><span><span class="kicker">' + esc(L(SEC[a.sec])) + (withEd && a.ed !== "adria" ? " · " + ED[a.ed].code : "") + '</span><span class="h3">' + esc(L(a).t) + "</span></span></a></li>";
     }).join("");
@@ -239,6 +238,17 @@
       '<div class="car-nav"><button data-step="-1" aria-label="' + esc(t().prev) + '">←</button><button data-step="1" aria-label="' + esc(t().next) + '">→</button></div>' +
       '<div class="car-ctrl">' + ctrl + "</div></div>" +
       '<aside class="latest" aria-labelledby="latest-h"><div class="sec-head"><h2 id="latest-h">' + esc(t().latest) + "</h2></div><ol>" + latest + "</ol></aside></section>";
+  }
+
+  /* The stories that come next in the carousel: small photo + headline, enough to tempt. */
+  var heroFeat = [], heroWithEd = false;
+  function nextHTML(cur) {
+    var n = heroFeat.length, out = "";
+    for (var k = 1; k <= Math.min(3, n - 1); k++) {
+      var j = (cur + k) % n, a = heroFeat[j];
+      out += '<button data-go="' + j + '" aria-controls="slide-' + j + '"><span class="cover nx__img">' + cover(a, { w: 320 }) + '</span><span class="nx__t">' + kicker(a, heroWithEd) + '<span class="h3">' + esc(L(a).t) + "</span></span></button>";
+    }
+    return out;
   }
 
   function figsHTML(list) {
@@ -253,14 +263,24 @@
       ids.map(function (id) {
         var x = ED[id], items = (id === "adria" ? onlyEd("adria") : onlyEd(id)).slice(0, 3);
         return '<div class="edcol"><a class="edcol__head" href="#' + id + '">' + eb(x) + "<span><b>" + esc(L(x)) + "</b><small>" + x.code + "</small></span></a><ul>" +
-          items.map(function (a) { return '<li><a href="#story-' + a.id + '">' + kicker(a) + '<span class="h3">' + esc(L(a).t) + "</span></a></li>"; }).join("") +
+          items.map(function (a, i) { return '<li><a href="#story-' + a.id + '">' + (i === 0 ? '<span class="cover edcol__img">' + cover(a, { w: 480 }) + "</span>" : "") + kicker(a) + '<span class="h3">' + esc(L(a).t) + "</span></a></li>"; }).join("") +
           '</ul><a class="more" href="#' + id + '">' + esc(t().openEd) + " →</a></div>";
       }).join("") + "</div></section>";
   }
 
+  function storiesHTML(list, withEd) {
+    if (!list.length) return "";
+    var lead = list[0], rest = list.slice(1);
+    var leadHTML = '<a class="lead" href="#story-' + lead.id + '"><span class="cover">' + cover(lead, { w: 1000, credit: true }) + '</span><span class="lead__text">' + kicker(lead, withEd) +
+      '<span class="h2">' + esc(L(lead).t) + '</span><span class="dek dek--sm">' + esc(L(lead).d) + "</span>" + meta(lead) + "</span></a>";
+    var side = rest.map(function (a) {
+      return '<li><a class="item" href="#story-' + a.id + '"><span class="item__text">' + kicker(a, withEd) + '<span class="h3">' + esc(L(a).t) + "</span>" + meta(a) + '</span><span class="cover item__img">' + cover(a, { w: 320 }) + "</span></a></li>";
+    }).join("");
+    return '<div class="stories' + (rest.length ? "" : " stories--solo") + '">' + leadHTML + (rest.length ? '<ul class="side">' + side + "</ul>" : "") + "</div>";
+  }
   function gridHTML(list, title, withEd, link) {
     if (!list.length) return "";
-    return '<section><div class="sec-head"><h2>' + esc(title) + "</h2>" + (link || "") + '</div><div class="grid">' + list.map(function (a) { return card(a, withEd); }).join("") + "</div></section>";
+    return '<section><div class="sec-head"><h2>' + esc(title) + "</h2>" + (link || "") + "</div>" + storiesHTML(list, withEd) + "</section>";
   }
 
   function nlHTML() {
@@ -290,7 +310,7 @@
     var e = ED[route.ed], s = SEC[route.sec];
     var list = byEd(route.ed).filter(function (a) { return a.sec === route.sec; });
     var head = '<header style="display:grid;gap:10px"><span class="kicker">ExpoBalkan ' + esc(L(e)) + '</span><h1 class="h1">' + esc(L(s)) + "</h1></header>";
-    var body = list.length ? '<div class="grid">' + list.map(function (a) { return card(a, route.ed === "adria"); }).join("") + "</div>"
+    var body = list.length ? storiesHTML(list, route.ed === "adria")
       : '<p class="dek">' + esc(t().empty) + ' <a href="#' + e.id + '" style="text-decoration:underline">' + esc(t().back) + "</a></p>";
     return head + body;
   }
@@ -359,14 +379,15 @@
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function carousel() {
     var root = document.getElementById("carousel"); if (!root) return;
-    var slides = root.querySelectorAll(".slide"), btns = root.querySelectorAll(".car-ctrl button"), n = slides.length, cur = 0, paused = false;
+    var slides = root.querySelectorAll(".slide"), strip = root.querySelector(".car-ctrl"), n = slides.length, cur = 0, paused = false;
     function go(i) {
       i = (i + n) % n;
       slides[cur].hidden = true; slides[i].hidden = false;
-      btns.forEach(function (b, k) { if (k === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); });
       cur = i;
+      strip.innerHTML = nextHTML(i);
+      wirePhotos();
     }
-    btns.forEach(function (b) { b.addEventListener("click", function () { go(+b.dataset.go); }); });
+    strip.addEventListener("click", function (ev) { var b = ev.target.closest("[data-go]"); if (b) go(+b.dataset.go); });
     root.querySelectorAll("[data-step]").forEach(function (b) { b.addEventListener("click", function () { go(cur + +b.dataset.step); }); });
     root.addEventListener("keydown", function (ev) { if (ev.key === "ArrowRight") go(cur + 1); if (ev.key === "ArrowLeft") go(cur - 1); });
     root.addEventListener("mouseenter", function () { paused = true; }); root.addEventListener("mouseleave", function () { paused = false; });
