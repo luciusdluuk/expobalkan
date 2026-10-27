@@ -66,9 +66,9 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 
 /* ---------- utility bar ---------- */
 .util { border-bottom: 1px solid var(--rule); font-size: 12px; color: var(--ink-2); }
-.util .wrap { display: flex; align-items: center; gap: 20px; min-height: 36px; }
+.util .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 20px; min-height: 36px; }
 .util__date { white-space: nowrap; }
-.ticker { display: flex; gap: 18px; overflow-x: auto; scrollbar-width: none; flex: 1; min-width: 0; }
+.ticker { display: flex; justify-content: center; gap: 18px; overflow-x: auto; scrollbar-width: none; min-width: 0; max-width: 100%; }
 .ticker::-webkit-scrollbar { display: none; }
 .ticker span { white-space: nowrap; }
 .ticker b { font-weight: 600; color: var(--ink); margin-right: 4px; letter-spacing: .02em; }
@@ -293,6 +293,9 @@ footer a:hover { color: var(--ink); }
   .edpick { gap: 6px; }
   .edpick a .eb { width: 34px; height: 34px; font-size: 14px; }
   .util__date { display: none; }
+  .util .wrap { grid-template-columns: minmax(0, 1fr); }
+  .util .wrap > span[aria-hidden] { display: none; }
+  .ticker { justify-content: flex-start; }
   .car-ctrl { grid-template-columns: repeat(var(--n, 5), minmax(0, 1fr)); gap: 6px; }
   .car-ctrl .t { display: none; }
   .figs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
