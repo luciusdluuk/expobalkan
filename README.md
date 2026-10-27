@@ -7,6 +7,10 @@ Business news platform for economy, finance, production and energy across the We
 - **Masthead** — menu, search, popular, latest, newsletter on the left; type logo in the middle; subscribe and MNE/EN on the right.
 - **Languages** — Montenegrin (MNE) and English (EN) everywhere; Macedonian (MK, Cyrillic) on the North Macedonia edition. Switch at the top right. White/dark switch is in the menu.
 
+## Ad slots (simulated)
+
+House ads for ExpoBalkan's own products fill the standard formats: desktop skin (side panels, screens 1600px and wider), leaderboard 970×90 (320×100 on phones), billboard 970×250 and MPU 300×250 (article rail and inside the article text). Each is labelled "Oglas" and can be swapped for real campaigns.
+
 ## Run it
 
 It is a static site with no build step. Open `index.html` in a browser, or serve the folder:

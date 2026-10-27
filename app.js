@@ -25,7 +25,10 @@
       keyFig: "Ključni pokazatelj", newsroom: "Redakcija",
       body2: "Redakcija ExpoBalkana prati ovu temu kroz razgovore s kompanijama, institucijama i analitičarima u regionu. U narednim danima objavićemo detaljnu analizu sa podacima i izjavama sagovornika.",
       body3: "Za kompanije koje posluju u regionu ovo je signal da prate razvoj događaja i planiraju na vrijeme: promjene u propisima, troškovima i tražnji obično stižu brže nego što statistika pokaže.",
-      designBy: "Dizajn:", related: "Povezano", home: "Naslovna", lang: "Jezik", photo: "Foto:", theme: "Izgled", white: "Bijela", dark: "Tamna",
+      designBy: "Dizajn:", ad: "Oglas",
+      subAdTitle: "Digitalna pretplata", subAdText: "Sve edicije, analize i arhiva za €6,90 mjesečno.", subAdBtn: "Pretplati se",
+      forumText: "Ekonomija regiona na jednom mjestu. Podgorica, mart 2027.", forumBtn: "Prijava uskoro", forumWhen: "Podgorica · mart 2027",
+      advTitle: "Oglašavajte se na ExpoBalkanu", advText: "Pet edicija, jedan region. Medijakit 2027.", advBtn: "Kontakt", related: "Povezano", home: "Naslovna", lang: "Jezik", photo: "Foto:", theme: "Izgled", white: "Bijela", dark: "Tamna",
       search: "Pretraga", searchPh: "Pretražite vijesti", noResults: "Nema rezultata za", popular: "Popularno", latestNav: "Najnovije", newsletter: "Newsletter",
       mostRead: "Najčitanije", reads: "čitanja", allLatest: "Sve najnovije vijesti", chooseEd: "Izaberite ediciju",
       subTitle: "Pretplata", subText: "Neograničen pristup analizama, podacima i svim edicijama ExpoBalkana.", perMonth: "mjesečno",
@@ -46,7 +49,10 @@
       keyFig: "Key figure", newsroom: "Newsroom",
       body2: "ExpoBalkan's newsroom is following this story through conversations with companies, institutions and analysts across the region. A full analysis with data and interviews will follow in the coming days.",
       body3: "For companies operating in the region, this is a signal to follow developments and plan early: changes in regulation, costs and demand usually arrive faster than the statistics show.",
-      designBy: "Design:", related: "Related", home: "Front page", lang: "Language", photo: "Photo:", theme: "Appearance", white: "White", dark: "Dark",
+      designBy: "Design:", ad: "Advertisement",
+      subAdTitle: "Digital subscription", subAdText: "Every edition, analysis and the archive for €6.90 a month.", subAdBtn: "Subscribe",
+      forumText: "The region's economy in one place. Podgorica, March 2027.", forumBtn: "Registration soon", forumWhen: "Podgorica · March 2027",
+      advTitle: "Advertise on ExpoBalkan", advText: "Five editions, one region. Media kit 2027.", advBtn: "Contact", related: "Related", home: "Front page", lang: "Language", photo: "Photo:", theme: "Appearance", white: "White", dark: "Dark",
       search: "Search", searchPh: "Search stories", noResults: "No results for", popular: "Popular", latestNav: "Latest", newsletter: "Newsletter",
       mostRead: "Most read", reads: "reads", allLatest: "All the latest stories", chooseEd: "Choose an edition",
       subTitle: "Subscribe", subText: "Unlimited access to ExpoBalkan analysis, data and every edition.", perMonth: "per month",
@@ -228,7 +234,7 @@
     }).join("");
     heroFeat = feat; heroWithEd = withEd;
     var ctrl = nextHTML(0);
-    var latest = all.slice(0, 8).map(function (a) {
+    var latest = all.slice(0, 6).map(function (a) {
       return '<li><a href="#story-' + a.id + '"><time class="num">' + clock(a.mins) + '</time><span><span class="kicker">' + esc(L(SEC[a.sec])) + (withEd && a.ed !== "adria" ? " · " + ED[a.ed].code : "") + '</span><span class="h3">' + esc(L(a).t) + "</span></span></a></li>";
     }).join("");
     return '<section class="hero">' +
@@ -286,17 +292,39 @@
       '<div><form id="nl-form"><label class="vh" for="nl-email">' + esc(t().nlPh) + '</label><input id="nl-email" type="email" required placeholder="' + esc(t().nlPh) + '"><button type="submit">' + esc(t().nlBtn) + '</button></form><div class="ok" id="nl-ok" hidden>' + esc(t().nlOk) + "</div></div></div>";
   }
 
+  /* ---------- simulated ad slots (house ads for ExpoBalkan's own products) ---------- */
+  function stripes() { return '<span class="ad-stripes">' + D.editions.filter(function (x) { return x.id !== "adria"; }).map(function (x) { return '<i style="background:' + x.bg + '"></i>'; }).join("") + "</span>"; }
+  function adWrap(kind, inner) { return '<aside class="ad ad--' + kind + '" aria-label="' + esc(t().ad) + '"><span class="ad__lab">' + esc(t().ad) + '</span><div class="ad__box">' + inner + "</div></aside>"; }
+  function adLeader(ed) {
+    return adWrap("leader", '<a class="adc adc--sub" href="#' + ed + '-subscribe"><span class="adc__brand">ExpoBalkan</span><span class="adc__txt"><b>' + esc(t().subAdTitle) + "</b> " + esc(t().subAdText) + '</span><span class="adc__btn">' + esc(t().subAdBtn) + "</span></a>");
+  }
+  function adBill() {
+    return adWrap("bill", '<div class="adc adc--forum"><span class="adc__k">' + esc(t().forumWhen) + '</span><span class="adc__big">ExpoBalkan Forum 2027</span><span class="adc__txt">' + esc(t().forumText) + '</span><button class="adc__btn" data-nl>' + esc(t().forumBtn) + "</button>" + stripes() + "</div>");
+  }
+  function adMpu(kind) {
+    if (kind === "forum") return adWrap("mpu", '<div class="adc adc--forum adc--sq"><span class="adc__k">' + esc(t().forumWhen) + '</span><span class="adc__big">ExpoBalkan Forum 2027</span><button class="adc__btn" data-nl>' + esc(t().forumBtn) + "</button>" + stripes() + "</div>");
+    return adWrap("mpu", '<div class="adc adc--adv"><span class="adc__icons">' + D.editions.map(function (x) { return eb(x); }).join("") + '</span><span class="adc__big">' + esc(t().advTitle) + '</span><span class="adc__txt">' + esc(t().advText) + '</span><span class="adc__btn">' + esc(t().advBtn) + "</span></div>");
+  }
+  function skin() {
+    var el = document.getElementById("skin");
+    if (!el) { el = document.createElement("div"); el.id = "skin"; el.setAttribute("aria-hidden", "true"); document.body.insertBefore(el, document.body.firstChild); }
+    var side = function (cls, extra) { return '<div class="skin__side ' + cls + '"><span class="skin__lab">' + esc(t().ad) + '</span><span class="skin__big">ExpoBalkan Forum 2027</span><span class="skin__when">' + esc(extra) + "</span>" + stripes() + "</div>"; };
+    el.innerHTML = side("skin__l", t().forumWhen) + side("skin__r", t().forumBtn);
+  }
+
   function homeView(route) {
     var ed = route.ed, e = ED[ed];
     var all = byEd(ed);
-    var html = heroHTML(route);
+    var html = adLeader(ed) + heroHTML(route);
     if (ed === "adria") {
       html += figsHTML(all);
+      html += adBill();
       html += edGridHTML(["bih", "srb", "mne", "mkd"], t().editions);
       html += gridHTML(onlyEd("adria").filter(function (a) { return !a.featured; }).concat(all.filter(function (a) { return a.ed !== "adria" && !a.featured; })).slice(0, 6), t().more, true);
     } else {
       var shown = 4;
       html += figsHTML(all);
+      html += adBill();
       html += gridHTML(all.slice(shown), t().moreFrom + " " + L(e), false);
       html += gridHTML(onlyEd("adria").slice(0, 3), t().fromRegion, false, '<a href="#adria">ExpoBalkan Adria →</a>');
       html += edGridHTML(["adria", "bih", "srb", "mne", "mkd"].filter(function (x) { return x !== ed; }), t().otherEds);
@@ -310,18 +338,18 @@
     var head = '<header style="display:grid;gap:10px"><span class="kicker">ExpoBalkan ' + esc(L(e)) + '</span><h1 class="h1">' + esc(L(s)) + "</h1></header>";
     var body = list.length ? storiesHTML(list, route.ed === "adria")
       : '<p class="dek">' + esc(t().empty) + ' <a href="#' + e.id + '" style="text-decoration:underline">' + esc(t().back) + "</a></p>";
-    return head + body;
+    return adLeader(e.id) + head + body;
   }
 
   function artView(route) {
     var a = route.art, e = ED[a.ed];
     var rel = byEd(a.ed).filter(function (x) { return x.id !== a.id; }).slice(0, 3);
-    return '<article class="article">' +
+    return '<div class="artwrap"><article class="article">' +
       '<nav class="crumbs" aria-label="Breadcrumb"><a href="#' + e.id + '">ExpoBalkan ' + esc(L(e)) + '</a><span>/</span><a href="#' + e.id + "-" + a.sec + '">' + esc(L(SEC[a.sec])) + "</a></nav>" +
       kicker(a) + '<h1 class="h1">' + esc(L(a).t) + '</h1><p class="dek">' + esc(L(a).d) + "</p>" + meta(a) +
       '<div class="cover">' + cover(a, { w: 1400, credit: true }) + "</div>" +
-      '<div class="body"><p>' + esc(L(a).d) + "</p><p>" + esc(t().body2) + "</p><p><strong>" + esc(t().keyFig) + ":</strong> " + esc(a.fig.v) + " — " + esc(L(a.fig)) + ".</p><p>" + esc(t().body3) + "</p></div>" +
-      '<p class="note">' + esc(t().proto) + "</p></article>" +
+      '<div class="body"><p>' + esc(L(a).d) + "</p><p>" + esc(t().body2) + "</p>" + adMpu("forum") + "<p><strong>" + esc(t().keyFig) + ":</strong> " + esc(a.fig.v) + " — " + esc(L(a.fig)) + ".</p><p>" + esc(t().body3) + "</p></div>" +
+      '<p class="note">' + esc(t().proto) + '</p></article><div class="artrail">' + adMpu("adv") + "</div></div>" +
       gridHTML(rel, t().related, false);
   }
 
@@ -426,6 +454,7 @@
     document.title = route.view === "art" ? L(route.art).t + " · ExpoBalkan" : "ExpoBalkan " + L(e);
     chrome(route);
     var main = document.getElementById("main");
+    skin();
     main.innerHTML = route.view === "art" ? artView(route) : route.view === "sec" ? secView(route) : route.view === "popular" ? popularView(route) :
       route.view === "latest" ? latestView(route) : route.view === "subscribe" ? subscribeView(route) : homeView(route);
     document.getElementById("newsletter").innerHTML = nlHTML();
