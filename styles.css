@@ -73,9 +73,12 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .ticker span { white-space: nowrap; }
 .ticker b { font-weight: 600; color: var(--ink); margin-right: 4px; letter-spacing: .02em; }
 .ticker .up { color: var(--up); } .ticker .down { color: var(--down); }
-.lang { display: flex; border: 1px solid var(--rule); border-radius: 2px; overflow: hidden; flex: none; }
-.lang button { padding: 3px 9px; font-size: 11px; font-weight: 600; letter-spacing: .08em; color: var(--ink-3); }
-.lang button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.lang { display: flex; align-items: center; flex: none; }
+.lang button { padding: 4px 0; font-size: 12px; font-weight: 600; letter-spacing: .06em; color: var(--ink-3); }
+.lang button + button::before { content: "/"; display: inline-block; margin: 0 8px; color: var(--rule); font-weight: 400; }
+.lang button:hover { color: var(--ink); }
+.lang button[aria-pressed="true"] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+.lang button + button[aria-pressed="true"]::before { text-decoration: none; }
 
 /* ---------- masthead ---------- */
 .mast { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: var(--paper); border-bottom: 1px solid var(--rule-strong); }
@@ -88,7 +91,7 @@ button { font: inherit; color: inherit; background: none; border: 0; padding: 0;
 .logo__tag { font: 600 10px/1 var(--f-ui); letter-spacing: .24em; text-transform: uppercase; color: var(--ed-ink); margin-top: 4px; }
 .logo__word { font-size: 32px; }
 .logo__type { display: grid; gap: 0; }
-.mast__right { display: flex; align-items: center; gap: 12px; justify-self: end; }
+.mast__right { display: flex; align-items: center; gap: 20px; justify-self: end; }
 .mast__left { display: flex; align-items: center; gap: 4px; justify-self: start; min-width: 0; }
 .mast__left .burger { margin-right: 10px; }
 .burger em, .navlink em { font-style: normal; }
