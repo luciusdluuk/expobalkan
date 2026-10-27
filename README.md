@@ -3,8 +3,9 @@
 Business news platform for economy, finance, production and energy across the Western Balkans.
 
 - **ExpoBalkan Adria** — the regional front page (all editions)
-- **Editions** — Bosnia & Herzegovina (BIH), Serbia (SRB), Montenegro (MNE), North Macedonia (MKD). Same design, content filtered to that country.
-- **Languages** — Montenegrin (MNE) and English (EN), switch in the top bar or the menu.
+- **Editions** — Bosnia & Herzegovina (BIH), Serbia (SRB), Montenegro (MNE), North Macedonia (MKD). Same design, content filtered to that country. Chosen from the menu (EB icon + code).
+- **Masthead** — menu, search, popular, latest, newsletter on the left; type logo in the middle; subscribe and MNE/EN on the right.
+- **Languages** — Montenegrin (MNE) and English (EN), switch at the top right. White/dark switch is in the menu.
 
 ## Run it
 
@@ -32,6 +33,9 @@ To publish with GitHub Pages: Settings → Pages → Deploy from branch → `mai
 | `#adria` | Regional front page |
 | `#bih` `#srb` `#mne` `#mkd` | Edition front page |
 | `#mne-econ` | Section within an edition (`econ`, `fin`, `prod`, `energy`, `markets`, `biz`) |
+| `#mne-popular` | Most read in an edition |
+| `#mne-latest` | All latest stories in an edition |
+| `#mne-subscribe` | Subscription plans |
 | `#story-m1` | Article |
 
 ## Adding a story

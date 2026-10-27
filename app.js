@@ -25,7 +25,12 @@
       keyFig: "Ključni pokazatelj", newsroom: "Redakcija",
       body2: "Redakcija ExpoBalkana prati ovu temu kroz razgovore s kompanijama, institucijama i analitičarima u regionu. U narednim danima objavićemo detaljnu analizu sa podacima i izjavama sagovornika.",
       body3: "Za kompanije koje posluju u regionu ovo je signal da prate razvoj događaja i planiraju na vrijeme: promjene u propisima, troškovima i tražnji obično stižu brže nego što statistika pokaže.",
-      related: "Povezano", home: "Naslovna", lang: "Jezik", photo: "Foto:", theme: "Izgled", white: "Bijela", dark: "Tamna"
+      related: "Povezano", home: "Naslovna", lang: "Jezik", photo: "Foto:", theme: "Izgled", white: "Bijela", dark: "Tamna",
+      search: "Pretraga", searchPh: "Pretražite vijesti", noResults: "Nema rezultata za", popular: "Popularno", latestNav: "Najnovije", newsletter: "Newsletter",
+      mostRead: "Najčitanije", reads: "čitanja", allLatest: "Sve najnovije vijesti", chooseEd: "Izaberite ediciju",
+      subTitle: "Pretplata", subText: "Neograničen pristup analizama, podacima i svim edicijama ExpoBalkana.", perMonth: "mjesečno",
+      plans: [["Digitalno", "€6,90", "Sve edicije, analize i arhiva na webu i mobilnom."], ["Digitalno + štampa", "€12,90", "Sve iz digitalne pretplate i mjesečni štampani magazin."]],
+      choose: "Izaberi", subOk: "Hvala! Poslali smo vam link za završetak pretplate.", samplePrices: "Cijene su primjer za prototip."
     },
     en: {
       latest: "Latest", numbers: "Numbers of the day", editions: "Editions", allEditions: "All editions",
@@ -41,7 +46,12 @@
       keyFig: "Key figure", newsroom: "Newsroom",
       body2: "ExpoBalkan's newsroom is following this story through conversations with companies, institutions and analysts across the region. A full analysis with data and interviews will follow in the coming days.",
       body3: "For companies operating in the region, this is a signal to follow developments and plan early: changes in regulation, costs and demand usually arrive faster than the statistics show.",
-      related: "Related", home: "Front page", lang: "Language", photo: "Photo:", theme: "Appearance", white: "White", dark: "Dark"
+      related: "Related", home: "Front page", lang: "Language", photo: "Photo:", theme: "Appearance", white: "White", dark: "Dark",
+      search: "Search", searchPh: "Search stories", noResults: "No results for", popular: "Popular", latestNav: "Latest", newsletter: "Newsletter",
+      mostRead: "Most read", reads: "reads", allLatest: "All the latest stories", chooseEd: "Choose an edition",
+      subTitle: "Subscribe", subText: "Unlimited access to ExpoBalkan analysis, data and every edition.", perMonth: "per month",
+      plans: [["Digital", "€6.90", "Every edition, analysis and the archive on web and mobile."], ["Digital + print", "€12.90", "Everything in Digital plus the monthly print magazine."]],
+      choose: "Choose", subOk: "Thanks! We sent you a link to finish subscribing.", samplePrices: "Prices are examples for the prototype."
     }
   };
 
@@ -62,6 +72,7 @@
     var p = h.split("-");
     if (ED[p[0]]) {
       if (p[1] && SEC[p[1]]) return { ed: p[0], view: "sec", sec: p[1] };
+      if (p[1] === "popular" || p[1] === "latest" || p[1] === "subscribe") return { ed: p[0], view: p[1] };
       return { ed: p[0], view: "home" };
     }
     return { ed: "adria", view: "home" };
@@ -146,22 +157,19 @@
       return '<span class="num"><b>' + k[0] + "</b>" + k[1] + ' <em class="' + cls + '" style="font-style:normal">' + (k[2] === "0.0" ? "0.0" : k[2]) + "%</em></span>";
     }).join("");
     document.getElementById("util").innerHTML =
-      '<div class="wrap"><span class="util__date">' + esc(dateStr) + '</span><div class="ticker" aria-label="Markets">' + tick + "</div>" + themeToggle() + langToggle() + "</div>";
+      '<div class="wrap"><span class="util__date">' + esc(dateStr) + '</span><div class="ticker" aria-label="Markets">' + tick + "</div></div>";
 
+    var ic = function (d) { return '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">' + d + "</svg>"; };
     document.getElementById("mast").innerHTML =
-      '<div class="wrap">' +
-      '<button class="burger" id="burger" aria-controls="drawer" aria-expanded="false"><i><span></span></i><em style="font-style:normal">' + esc(t().menu) + "</em></button>" +
-      '<a class="logo" href="#' + e.id + '" aria-label="ExpoBalkan ' + esc(L(e)) + '">' + eb(e) +
-      '<span class="logo__type"><span class="logo__word">ExpoBalkan</span><span class="logo__tag">' + esc(L(e)) + "</span></span></a>" +
-      '<div class="mast__right"><a class="btn btn--solid" href="#' + e.id + '" data-subscribe>' + esc(t().subscribe) + "</a></div></div>";
-    var logoEb = document.querySelector(".logo .eb"); if (logoEb) { logoEb.style.width = "40px"; logoEb.style.height = "40px"; logoEb.style.fontSize = "17px"; }
-
-    document.getElementById("eds").innerHTML = '<nav class="wrap" aria-label="' + esc(t().editions) + '">' + D.editions.map(function (x) {
-      return '<a href="#' + x.id + '" style="--ed-of:var(--c-' + x.id + '-ink)"' + (x.id === route.ed ? ' aria-current="page"' : "") + ">" + eb(x) + "<b>" + x.code + "</b><span>" + esc(L(x)) + "</span></a>";
-    }).join("") + "</nav>";
-
-    document.getElementById("secs").innerHTML = '<nav class="wrap" aria-label="' + esc(t().sections) + '"><a href="#' + e.id + '"' + (route.view === "home" ? ' aria-current="page"' : "") + ">" + esc(t().home) + "</a>" +
-      D.sections.map(function (s) { return '<a href="#' + e.id + "-" + s.id + '"' + (route.sec === s.id ? ' aria-current="page"' : "") + ">" + esc(L(s)) + "</a>"; }).join("") + "</nav>";
+      '<div class="wrap"><nav class="mast__left" aria-label="Main">' +
+      '<button class="burger" id="burger" aria-controls="drawer" aria-expanded="false"><i><span></span></i><em>' + esc(t().menu) + "</em></button>" +
+      '<button class="navlink" id="search-btn" aria-controls="searchbar" aria-expanded="false">' + ic('<circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5 14 14"/>') + "<em>" + esc(t().search) + "</em></button>" +
+      '<a class="navlink hide-m" href="#' + e.id + '-popular"' + (route.view === "popular" ? ' aria-current="page"' : "") + ">" + esc(t().popular) + "</a>" +
+      '<a class="navlink hide-m" href="#' + e.id + '-latest"' + (route.view === "latest" ? ' aria-current="page"' : "") + ">" + esc(t().latestNav) + "</a>" +
+      '<button class="navlink hide-m" data-nl>' + esc(t().newsletter) + "</button></nav>" +
+      '<a class="logo" href="#' + e.id + '" aria-label="ExpoBalkan ' + esc(L(e)) + '"><span class="logo__word">ExpoBalkan</span><span class="logo__tag">' + esc(L(e)) + "</span></a>" +
+      '<div class="mast__right"><a class="btn btn--solid" href="#' + e.id + '-subscribe">' + esc(t().subscribe) + "</a>" + langToggle() + "</div></div>" +
+      '<div class="searchbar" id="searchbar" hidden><div class="wrap"><label class="vh" for="search-q">' + esc(t().searchPh) + '</label><input id="search-q" type="search" autocomplete="off" placeholder="' + esc(t().searchPh) + '"><ol id="search-res"></ol></div></div>';
 
     drawer(route);
     footer(route);
@@ -179,14 +187,15 @@
     var e = ED[route.ed];
     document.getElementById("drawer").innerHTML =
       '<div class="drawer__top"><span class="logo__word" style="font-size:22px">ExpoBalkan</span><button class="btn" id="drawer-close">' + esc(t().close) + " ✕</button></div>" +
-      "<div><h3>" + esc(t().editions) + "</h3><ul>" + D.editions.map(function (x) {
-        return '<li><a href="#' + x.id + '"' + (x.id === route.ed ? ' aria-current="page"' : "") + ">" + eb(x) + esc(L(x)) + "<small>" + x.code + "</small></a></li>";
-      }).join("") + "</ul></div>" +
-      "<div><h3>" + esc(t().sections) + " · " + esc(L(e)) + "</h3><ul>" + D.sections.map(function (s) {
-        return '<li><a href="#' + e.id + "-" + s.id + '">' + esc(L(s)) + "</a></li>";
-      }).join("") + "</ul></div>" +
-      "<div><h3>" + esc(t().company) + '</h3><ul><li><a href="#' + e.id + '">' + esc(t().about) + '</a></li><li><a href="#' + e.id + '">' + esc(t().advertise) + '</a></li><li><a href="#' + e.id + '">' + esc(t().contact) + "</a></li></ul></div>" +
-      "<div><h3>" + esc(t().lang) + '</h3><div style="display:flex;gap:8px;flex-wrap:wrap">' + langToggle() + themeToggle() + "</div></div>";
+      "<div><h3>" + esc(t().chooseEd) + '</h3><div class="edpick">' + D.editions.map(function (x) {
+        return '<a href="#' + x.id + '" title="' + esc(L(x)) + '"' + (x.id === route.ed ? ' aria-current="page"' : "") + ">" + eb(x) + "<b>" + x.code + "</b></a>";
+      }).join("") + "</div></div>" +
+      "<div><h3>" + esc(t().sections) + " · " + x(e) + "</h3><ul>" + D.sections.map(function (s) {
+        return '<li><a href="#' + e.id + "-" + s.id + '"' + (route.sec === s.id ? ' aria-current="page"' : "") + ">" + esc(L(s)) + "</a></li>";
+      }).join("") + '<li><a href="#' + e.id + '-popular">' + esc(t().popular) + '</a></li><li><a href="#' + e.id + '-latest">' + esc(t().latestNav) + "</a></li></ul></div>" +
+      "<div><h3>" + esc(t().theme) + "</h3>" + themeToggle() + "</div>" +
+      "<div><h3>" + esc(t().company) + '</h3><ul><li><a href="#' + e.id + '">' + esc(t().about) + '</a></li><li><a href="#' + e.id + '">' + esc(t().advertise) + '</a></li><li><a href="#' + e.id + '">' + esc(t().contact) + "</a></li></ul></div>";
+    function x(ed) { return ed.code; }
   }
 
   function footer(route) {
@@ -291,6 +300,54 @@
       gridHTML(rel, t().related, false);
   }
 
+  function reads(a) { var r = rng(a.id + "r"); return Math.round(1200 + r() * 9000 + (a.featured ? 6000 : 0)); }
+  function thumb(a) { return '<span class="cover row__img">' + cover(a) + "</span>"; }
+
+  function listHead(route, title) {
+    return '<header class="pagehead"><span class="kicker">ExpoBalkan ' + esc(L(ED[route.ed])) + '</span><h1 class="h1">' + esc(title) + "</h1></header>";
+  }
+
+  function popularView(route) {
+    var list = byEd(route.ed).slice().sort(function (a, b) { return reads(b) - reads(a); }).slice(0, 10);
+    var withEd = route.ed === "adria";
+    return listHead(route, t().mostRead) + '<ol class="rows">' + list.map(function (a, i) {
+      return '<li><a class="row" href="#story-' + a.id + '"><span class="row__rank num">' + (i + 1) + '</span><span class="row__text">' + kicker(a, withEd) +
+        '<span class="h2">' + esc(L(a).t) + '</span><span class="dek dek--sm">' + esc(L(a).d) + '</span><span class="meta"><span class="num">' + reads(a).toLocaleString(lang === "me" ? "de-DE" : "en-GB") + " " + esc(t().reads) + "</span></span></span>" + thumb(a) + "</a></li>";
+    }).join("") + "</ol>";
+  }
+
+  function latestView(route) {
+    var withEd = route.ed === "adria";
+    return listHead(route, t().allLatest) + '<ol class="rows">' + byEd(route.ed).map(function (a) {
+      return '<li><a class="row" href="#story-' + a.id + '"><time class="row__rank row__time num">' + clock(a.mins) + '</time><span class="row__text">' + kicker(a, withEd) +
+        '<span class="h2">' + esc(L(a).t) + '</span><span class="dek dek--sm">' + esc(L(a).d) + "</span>" + meta(a) + "</span>" + thumb(a) + "</a></li>";
+    }).join("") + "</ol>";
+  }
+
+  function subscribeView(route) {
+    return listHead(route, t().subTitle) + '<p class="dek">' + esc(t().subText) + '</p><div class="plans">' + t().plans.map(function (p, i) {
+      return '<form class="plan' + (i ? " plan--hi" : "") + '" data-plan><h2 class="h2">' + esc(p[0]) + '</h2><p class="plan__price num">' + esc(p[1]) + " <small>" + esc(t().perMonth) + '</small></p><p class="dek dek--sm">' + esc(p[2]) + "</p>" +
+        '<label class="vh" for="plan-email-' + i + '">' + esc(t().nlPh) + '</label><input id="plan-email-' + i + '" type="email" required placeholder="' + esc(t().nlPh) + '"><button class="btn btn--solid" type="submit">' + esc(t().choose) + '</button><p class="ok" hidden>' + esc(t().subOk) + "</p></form>";
+    }).join("") + '</div><p class="meta">' + esc(t().samplePrices) + "</p>";
+  }
+
+  /* ---------- search ---------- */
+  function runSearch(q) {
+    var res = document.getElementById("search-res"); if (!res) return;
+    q = q.trim().toLowerCase();
+    if (!q) { res.innerHTML = ""; return; }
+    var hits = D.articles.filter(function (a) { return (L(a).t + " " + L(a).d + " " + L(ED[a.ed]) + " " + L(SEC[a.sec])).toLowerCase().indexOf(q) > -1; }).slice(0, 8);
+    res.innerHTML = hits.length ? hits.map(function (a) {
+      return '<li><a href="#story-' + a.id + '"><span class="kicker">' + esc(L(SEC[a.sec])) + " · " + ED[a.ed].code + '</span><span class="h3">' + esc(L(a).t) + "</span></a></li>";
+    }).join("") : '<li class="meta">' + esc(t().noResults) + " “" + esc(q) + "”</li>";
+  }
+  function toggleSearch(open) {
+    var bar = document.getElementById("searchbar"), btn = document.getElementById("search-btn");
+    if (!bar) return;
+    bar.hidden = !open; btn.setAttribute("aria-expanded", String(open));
+    if (open) document.getElementById("search-q").focus();
+  }
+
   /* ---------- carousel ---------- */
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   function carousel() {
@@ -335,12 +392,11 @@
     document.title = route.view === "art" ? L(route.art).t + " · ExpoBalkan" : "ExpoBalkan " + L(e);
     chrome(route);
     var main = document.getElementById("main");
-    main.innerHTML = route.view === "art" ? artView(route) : route.view === "sec" ? secView(route) : homeView(route);
+    main.innerHTML = route.view === "art" ? artView(route) : route.view === "sec" ? secView(route) : route.view === "popular" ? popularView(route) :
+      route.view === "latest" ? latestView(route) : route.view === "subscribe" ? subscribeView(route) : homeView(route);
     document.getElementById("newsletter").innerHTML = nlHTML();
     carousel();
     wirePhotos();
-    var rail = document.querySelector(".eds .wrap"), act = rail && rail.querySelector('[aria-current="page"]');
-    if (act) rail.scrollLeft = Math.max(0, act.offsetLeft - 16);
     closeDrawer();
     if (scroll) window.scrollTo(0, 0);
   }
@@ -352,13 +408,16 @@
     if (l) { lang = l.dataset.lang; try { localStorage.setItem("eb-lang", lang); } catch (e) {} render(false); return; }
     if (ev.target.closest("#burger")) { openDrawer(); return; }
     if (ev.target.closest("#drawer-close") || ev.target.closest("#scrim")) { closeDrawer(); return; }
-    var s = ev.target.closest("[data-subscribe]");
+    if (ev.target.closest("#search-btn")) { var sb = document.getElementById("searchbar"); toggleSearch(sb.hidden); return; }
+    var s = ev.target.closest("[data-nl]");
     if (s) { var nl = document.getElementById("newsletter"); if (nl) { ev.preventDefault(); nl.scrollIntoView({ behavior: reduced ? "auto" : "smooth" }); var i = document.getElementById("nl-email"); if (i) i.focus({ preventScroll: true }); } }
   });
+  document.addEventListener("input", function (ev) { if (ev.target.id === "search-q") runSearch(ev.target.value); });
   document.addEventListener("submit", function (ev) {
+    if (ev.target.hasAttribute("data-plan")) { ev.preventDefault(); ev.target.querySelector(".ok").hidden = false; ev.target.querySelector("button").disabled = true; return; }
     if (ev.target.id === "nl-form") { ev.preventDefault(); ev.target.hidden = true; document.getElementById("nl-ok").hidden = false; }
   });
-  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape" && document.body.classList.contains("drawer-open")) closeDrawer(); });
+  document.addEventListener("keydown", function (ev) { if (ev.key === "Escape") { if (document.body.classList.contains("drawer-open")) closeDrawer(); toggleSearch(false); } });
   window.addEventListener("hashchange", function () { render(true); });
   render(false);
 })();
