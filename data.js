@@ -37,15 +37,27 @@ window.EB_DATA = {
     vineyard: { id: "photo-1543418219-44e30b057fea", by: "Boudewijn Boer" },
     welding:  { id: "photo-1738162837408-5fbf53f0b97a", by: "Cemrecan Yurtman" },
     cranes:   { id: "photo-1684497404598-6e844dff9cde", by: "novila misastra" },
-    office:   { id: "photo-1774600134168-b9ebd714e4e1", by: "Fiqih Alfarish" }
+    office:   { id: "photo-1774600134168-b9ebd714e4e1", by: "Fiqih Alfarish" },
+    powerlines: { id: "photo-1473341304170-971dccb5ac1e", by: "Matthew Henry" },
+    bank:     { id: "photo-1764983255241-3768b4df0c57", by: "Leo_Visions" },
+    ev:       { id: "photo-1593941707874-ef25b8b4a92b", by: "CHUTTERSNAP" },
+    candles:  { id: "photo-1611974789855-9c2a0a7236a3", by: "Maxim Hopman" },
+    raspberries: { id: "photo-1577069861033-55d04cec4ef5", by: "Zach Inglis" },
+    gold:     { id: "photo-1610375461246-83df859d849d", by: "Jingming Pan" },
+    newspaper: { id: "photo-1579532537598-459ecdaf39cc", by: "Annie Spratt" },
+    meeting:  { id: "photo-1517048676732-d65bc937f952", by: "Dylan Gillis" },
+    euflags:  { id: "photo-1594810205183-18a8b0ce6c13", by: "Guillaume Périgois" },
+    skopje:   { id: "photo-1656500959120-e2c368582aeb", by: "Nikola Mihajloski" },
+    powerplant: { id: "photo-1759384395680-c16405aee554", by: "Jakub Żerdzicki" },
+    card:     { id: "photo-1556742031-c6961e8560b0", by: "Clay Banks" }
   },
   /* Which photo each article uses (falls back to the graphic cover if a photo can't load). */
   articlePhotos: {
-    a1: "cranes", a2: "wind", a3: "euro", a4: "cars", a5: "trading",
+    a1: "cranes", a2: "powerlines", a3: "bank", a4: "cars", a5: "trading",
     b1: "solar", b2: "welding", b3: "euro", b4: "sarajevo", b5: "office",
-    s1: "cars", s2: "trading", s3: "belgrade", s4: "vineyard", s5: "euro",
-    m1: "kotor", m2: "wind", m3: "trading", m4: "port", m5: "office", m6: "cranes",
-    k1: "welding", k2: "solar", k3: "euro", k4: "vineyard", k5: "ohrid"
+    s1: "ev", s2: "candles", s3: "belgrade", s4: "raspberries", s5: "gold",
+    m1: "kotor", m2: "wind", m3: "newspaper", m4: "port", m5: "meeting", m6: "euflags",
+    k1: "skopje", k2: "powerplant", k3: "card", k4: "vineyard", k5: "ohrid"
   },
 
   /* Market strip per edition (sample values) */

@@ -160,7 +160,7 @@
       return '<span class="num"><b>' + k[0] + "</b>" + k[1] + ' <em class="' + cls + '" style="font-style:normal">' + (k[2] === "0.0" ? "0.0" : k[2]) + "%</em></span>";
     }).join("");
     document.getElementById("util").innerHTML =
-      '<div class="wrap"><span class="util__date">' + esc(dateStr) + ' · <time class="num" id="clock">' + clock(0) + '</time></span><div class="ticker" aria-label="Markets">' + tick + '</div><span aria-hidden="true"></span></div>';
+      '<div class="wrap"><span class="util__date">' + esc(dateStr) + ' · <time class="num" id="clock">' + clock(0) + '</time></span><div class="ticker" aria-label="Markets">' + tick + '</div></div>';
 
     var ic = function (d) { return '<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">' + d + "</svg>"; };
     document.getElementById("mast").innerHTML =
