@@ -1,0 +1,148 @@
+/* ExpoBalkan — prototype content.
+   All articles are illustrative sample content for the prototype, not reporting.
+   Each article: id, ed (edition), sec (section), mins (minutes ago), featured,
+   fig {v: headline figure, me/en: figure label}, me/en {t: title, d: standfirst}. */
+
+window.EB_DATA = {
+  editions: [
+    { id: "adria", code: "ADRIA", me: "Adria",               en: "Adria",                  ink: "#FFFFFF", bg: "#111111", bar: "#8C8C8C" },
+    { id: "bih",   code: "BIH",   me: "Bosna i Hercegovina", en: "Bosnia & Herzegovina",   ink: "#FFFFFF", bg: "#002F6C", bar: "#FECB00" },
+    { id: "srb",   code: "SRB",   me: "Srbija",              en: "Serbia",                 ink: "#FFFFFF", bg: "#C6363C", bar: "#0C4076" },
+    { id: "mne",   code: "MNE",   me: "Crna Gora",           en: "Montenegro",             ink: "#D4AF37", bg: "#8E0A0E", bar: "#D4AF37" },
+    { id: "mkd",   code: "MKD",   me: "Sjeverna Makedonija", en: "North Macedonia",        ink: "#FFFFFF", bg: "#E2000F", bar: "#FFE600" }
+  ],
+
+  sections: [
+    { id: "econ",    me: "Ekonomija",   en: "Economy" },
+    { id: "fin",     me: "Finansije",   en: "Finance" },
+    { id: "prod",    me: "Proizvodnja", en: "Production" },
+    { id: "energy",  me: "Energetika",  en: "Energy" },
+    { id: "markets", me: "Tržišta",     en: "Markets" },
+    { id: "biz",     me: "Biznis",      en: "Business" }
+  ],
+
+  /* Market strip per edition (sample values) */
+  tickers: {
+    adria: [["BELEX15", "1,184.2", "+0.6"], ["SASX-10", "1,412.7", "+0.3"], ["MONEX", "21,940", "-0.2"], ["MBI10", "8,033.5", "+0.9"], ["EUR/RSD", "117.16", "0.0"], ["BRENT", "$71.40", "-1.1"]],
+    bih:   [["SASX-10", "1,412.7", "+0.3"], ["BIRS", "742.9", "+0.1"], ["EUR/BAM", "1.9558", "0.0"], ["BRENT", "$71.40", "-1.1"]],
+    srb:   [["BELEX15", "1,184.2", "+0.6"], ["BELEXline", "2,391.0", "+0.4"], ["EUR/RSD", "117.16", "0.0"], ["BRENT", "$71.40", "-1.1"]],
+    mne:   [["MONEX", "21,940", "-0.2"], ["MNSE10", "1,086.3", "+0.2"], ["EUR/USD", "1.084", "+0.1"], ["BRENT", "$71.40", "-1.1"]],
+    mkd:   [["MBI10", "8,033.5", "+0.9"], ["OMB", "141.2", "+0.1"], ["EUR/MKD", "61.52", "0.0"], ["BRENT", "$71.40", "-1.1"]]
+  },
+
+  articles: [
+    /* ---------- Adria / regional ---------- */
+    { id: "a1", ed: "adria", sec: "econ", mins: 22, featured: true,
+      fig: { v: "+3.4%", me: "BDP regiona, procjena 2026.", en: "Regional GDP, 2026 est." },
+      me: { t: "Zapadni Balkan treći put zaredom raste brže od prosjeka EU", d: "Investicije u infrastrukturu i rast izvoza drže region iznad evropskog prosjeka, ali produktivnost i dalje zaostaje." },
+      en: { t: "Western Balkans outpaces EU growth for a third straight year", d: "Infrastructure spending and rising exports keep the region ahead of the European average, but productivity still lags." } },
+    { id: "a2", ed: "adria", sec: "energy", mins: 75, featured: true,
+      fig: { v: "1.2 GW", me: "Planirani kapacitet", en: "Planned capacity" },
+      me: { t: "Jadranska elektroenergetska veza ulazi u fazu tendera", d: "Podmorski kabl trebalo bi da poveže mreže četiri države i otvori put izvozu struje iz obnovljivih izvora." },
+      en: { t: "Adriatic power link moves to tender stage", d: "The subsea cable would connect four national grids and open an export route for renewable power." } },
+    { id: "a3", ed: "adria", sec: "fin", mins: 140,
+      fig: { v: "€48bn", me: "Ukupni depoziti", en: "Total deposits" },
+      me: { t: "Banke u regionu bilježe rekordne depozite uz pad kamatnih stopa", d: "Štednja stanovništva raste uprkos nižim kamatama, a banke traže nove načine da plasiraju novac." },
+      en: { t: "Regional banks report record deposits as rates ease", d: "Household savings keep rising despite lower rates, and banks are looking for new places to lend." } },
+    { id: "a4", ed: "adria", sec: "prod", mins: 210, featured: true,
+      fig: { v: "212", me: "Novih pogona od 2023.", en: "New plants since 2023" },
+      me: { t: "Talas nearshoringa: zašto evropski proizvođači sele pogone na Balkan", d: "Blizina tržišta EU, niži troškovi i obučena radna snaga privlače proizvođače dijelova, tekstila i elektronike." },
+      en: { t: "The nearshoring wave: why European manufacturers are moving to the Balkans", d: "Proximity to EU markets, lower costs and a trained workforce are drawing makers of parts, textiles and electronics." } },
+    { id: "a5", ed: "adria", sec: "markets", mins: 320,
+      fig: { v: "3", me: "Berze u pregovorima", en: "Exchanges in talks" },
+      me: { t: "Berze u Beogradu, Sarajevu i Skoplju razmatraju zajedničku platformu", d: "Zajednička platforma za trgovanje mogla bi povećati likvidnost malih tržišta kapitala u regionu." },
+      en: { t: "Belgrade, Sarajevo and Skopje exchanges explore a shared platform", d: "A joint trading platform could add liquidity to the region's small capital markets." } },
+
+    /* ---------- Bosnia & Herzegovina ---------- */
+    { id: "b1", ed: "bih", sec: "energy", mins: 35, featured: true,
+      fig: { v: "1.04 GW", me: "Solarni projekti u pripremi", en: "Solar pipeline" },
+      me: { t: "Solarni projekti u BiH prvi put prelaze 1 GW", d: "Investitori najviše grade u Hercegovini, gdje broj sunčanih sati spada među najveće u Evropi." },
+      en: { t: "Bosnia's solar pipeline tops 1 GW for the first time", d: "Investors are concentrating on Herzegovina, which has some of the most sunshine hours in Europe." } },
+    { id: "b2", ed: "bih", sec: "prod", mins: 95, featured: true,
+      fig: { v: "€120m", me: "Vrijednost izvoznih ugovora", en: "Export contracts" },
+      me: { t: "Metaloprerađivači iz Zenice potpisali izvozne ugovore vrijedne 120 miliona eura", d: "Najveći dio ugovora odnosi se na komponente za njemačku i austrijsku građevinsku industriju." },
+      en: { t: "Zenica metalworkers sign €120m in export contracts", d: "Most of the orders are for components for the German and Austrian construction industries." } },
+    { id: "b3", ed: "bih", sec: "fin", mins: 180,
+      fig: { v: "1.95583", me: "KM za jedan euro", en: "BAM per euro" },
+      me: { t: "Centralna banka zadržava valutni odbor bez izmjena", d: "Fiksni kurs konvertibilne marke ostaje temelj stabilnosti, poručuju iz Centralne banke." },
+      en: { t: "Central bank keeps the currency board unchanged", d: "The fixed convertible mark rate remains the anchor of stability, the central bank says." } },
+    { id: "b4", ed: "bih", sec: "econ", mins: 260,
+      fig: { v: "10%", me: "Doznake kao udio BDP-a", en: "Remittances, share of GDP" },
+      me: { t: "Doznake iz dijaspore dostižu deset odsto BDP-a", d: "Novac iz inostranstva i dalje je jedan od najvažnijih izvora potrošnje domaćinstava." },
+      en: { t: "Diaspora remittances reach a tenth of GDP", d: "Money sent from abroad remains one of the main drivers of household spending." } },
+    { id: "b5", ed: "bih", sec: "biz", mins: 400,
+      fig: { v: "+18%", me: "Rast zaposlenosti u IT-u", en: "IT hiring growth" },
+      me: { t: "Sarajevske IT firme zapošljavaju najbržim tempom od 2019.", d: "Potražnja za razvojnim timovima iz EU drži plate u sektoru iznad prosjeka privrede." },
+      en: { t: "Sarajevo tech firms hire at the fastest pace since 2019", d: "Demand for development teams from the EU keeps sector pay above the economy-wide average." } },
+
+    /* ---------- Serbia ---------- */
+    { id: "s1", ed: "srb", sec: "prod", mins: 18, featured: true,
+      fig: { v: "4,300", me: "Novih radnih mjesta", en: "New jobs" },
+      me: { t: "Dobavljači auto-industrije šire proizvodnju u Kragujevcu", d: "Novi pogoni za električna vozila trebalo bi da otvore hiljade radnih mjesta do kraja 2027." },
+      en: { t: "Automotive suppliers expand production in Kragujevac", d: "New plants for electric-vehicle parts are set to add thousands of jobs by the end of 2027." } },
+    { id: "s2", ed: "srb", sec: "markets", mins: 60, featured: true,
+      fig: { v: "+6.2%", me: "BELEX15 za mjesec", en: "BELEX15, month" },
+      me: { t: "Beogradska berza ostvarila najbolji mjesec u godini", d: "Rast su predvodile akcije energetskih i telekomunikacionih kompanija." },
+      en: { t: "Belgrade Stock Exchange posts its strongest month of the year", d: "Energy and telecom shares led the gains." } },
+    { id: "s3", ed: "srb", sec: "econ", mins: 150,
+      fig: { v: "+11%", me: "Građevinska aktivnost", en: "Construction output" },
+      me: { t: "Investicioni ciklus Expo 2027 podiže građevinsku aktivnost", d: "Radovi na izložbenom kompleksu i pratećoj infrastrukturi vuku rast cijelog sektora." },
+      en: { t: "Expo 2027 investment cycle lifts construction output", d: "Work on the exhibition grounds and related infrastructure is pulling the whole sector up." } },
+    { id: "s4", ed: "srb", sec: "biz", mins: 290,
+      fig: { v: "€4.9bn", me: "Izvoz poljoprivrede", en: "Agri-food exports" },
+      me: { t: "Izvoz poljoprivrednih proizvoda dostiže rekord", d: "Malina, kukuruz i prerađeno voće i dalje su najtraženiji proizvodi na tržištu EU." },
+      en: { t: "Agri-food exports hit a record", d: "Raspberries, maize and processed fruit remain the most sought-after products in the EU." } },
+    { id: "s5", ed: "srb", sec: "fin", mins: 380,
+      fig: { v: "€29bn", me: "Devizne rezerve", en: "FX reserves" },
+      me: { t: "Dinar stabilan uz rast deviznih rezervi", d: "Narodna banka očekuje da kurs ostane stabilan i u prvoj polovini naredne godine." },
+      en: { t: "Dinar holds steady as reserves climb", d: "The central bank expects the exchange rate to stay stable into the first half of next year." } },
+
+    /* ---------- Montenegro ---------- */
+    { id: "m1", ed: "mne", sec: "econ", mins: 12, featured: true,
+      fig: { v: "€1.6bn", me: "Prihod od turizma", en: "Tourism revenue" },
+      me: { t: "Turistička sezona zatvorena rekordnim prihodima", d: "Duža sezona i više gostiju sa dalekih tržišta podigli su potrošnju, ali i pritisak na infrastrukturu." },
+      en: { t: "Tourist season closes with record revenue", d: "A longer season and more long-haul visitors lifted spending, and the strain on infrastructure." } },
+    { id: "m2", ed: "mne", sec: "energy", mins: 55, featured: true,
+      fig: { v: "150 MW", me: "Snaga vjetroelektrane", en: "Wind farm capacity" },
+      me: { t: "Vjetroelektrana kod Nikšića u završnoj fazi dozvola", d: "Kada bude završena, mogla bi da pokrije potrošnju desetina hiljada domaćinstava." },
+      en: { t: "Nikšić wind farm enters final permitting", d: "Once built, it could cover the consumption of tens of thousands of households." } },
+    { id: "m3", ed: "mne", sec: "fin", mins: 130, featured: true,
+      fig: { v: "4.1%", me: "Prinos na obveznice", en: "Bond yield" },
+      me: { t: "Crna Gora se vraća na tržište obveznica uz nižu kamatu", d: "Nova emisija koristiće se za refinansiranje starijeg i skupljeg duga." },
+      en: { t: "Montenegro returns to the bond market at a lower yield", d: "The new issue will refinance older, more expensive debt." } },
+    { id: "m4", ed: "mne", sec: "prod", mins: 240,
+      fig: { v: "+9%", me: "Kontejnerski promet", en: "Container traffic" },
+      me: { t: "Kontejnerski promet Luke Bar raste četvrtu godinu zaredom", d: "Luka računa na bolje željezničke veze sa Srbijom kako bi preuzela veći dio tranzita." },
+      en: { t: "Port of Bar container traffic rises for a fourth year", d: "The port is counting on better rail links to Serbia to win a bigger share of transit." } },
+    { id: "m5", ed: "mne", sec: "biz", mins: 330,
+      fig: { v: "€12m", me: "Veličina fonda", en: "Fund size" },
+      me: { t: "Podgorički startapi pokreću prvi regionalni seed fond", d: "Fond će ulagati u rane faze kompanija iz Crne Gore i susjednih zemalja." },
+      en: { t: "Podgorica startups launch the first regional seed fund", d: "The fund will back early-stage companies from Montenegro and neighbouring countries." } },
+    { id: "m6", ed: "mne", sec: "econ", mins: 450,
+      fig: { v: "33", me: "Pregovaračka poglavlja", en: "Negotiating chapters" },
+      me: { t: "Poglavlja s EU: šta njihovo zatvaranje znači za privredu", d: "Usklađivanje propisa donosi nove obaveze firmama, ali i pristup većem tržištu i fondovima." },
+      en: { t: "EU chapters: what closing them means for business", d: "Aligning regulation brings new obligations for companies, and access to a larger market and funds." } },
+
+    /* ---------- North Macedonia ---------- */
+    { id: "k1", ed: "mkd", sec: "prod", mins: 28, featured: true,
+      fig: { v: "3", me: "Nova proizvođača", en: "New manufacturers" },
+      me: { t: "Slobodne zone u Skoplju privlače tri nova proizvođača", d: "Investitori dolaze iz sektora auto-dijelova i elektronike, a proizvodnja počinje naredne godine." },
+      en: { t: "Skopje free zones attract three new manufacturers", d: "The investors make car parts and electronics, and production starts next year." } },
+    { id: "k2", ed: "mkd", sec: "energy", mins: 110, featured: true,
+      fig: { v: "2030", me: "Ciljna godina", en: "Target year" },
+      me: { t: "Plan izlaska iz uglja određuje 2030. kao ciljnu godinu", d: "Zamjena termoelektrana solarnim i gasnim kapacitetima traži ulaganja od nekoliko milijardi eura." },
+      en: { t: "Coal phase-out plan sets 2030 as the target", d: "Replacing coal plants with solar and gas capacity will take billions of euros in investment." } },
+    { id: "k3", ed: "mkd", sec: "fin", mins: 200,
+      fig: { v: "+14%", me: "Profit banaka", en: "Bank profits" },
+      me: { t: "Profit bankarskog sektora raste uz rast kredita", d: "Najbrže rastu stambeni krediti, dok su krediti privredi stabilni." },
+      en: { t: "Banking profits rise on loan growth", d: "Mortgages are growing fastest, while business lending is flat." } },
+    { id: "k4", ed: "mkd", sec: "biz", mins: 310,
+      fig: { v: "+22%", me: "Izvoz vina u Aziju", en: "Wine exports to Asia" },
+      me: { t: "Izvoz vina pronalazi nova tržišta u Aziji", d: "Vinarije iz Tikveša šire prodaju na Daleki istok uz podršku zajedničkog brenda." },
+      en: { t: "Wine exports find new markets in Asia", d: "Tikveš wineries are expanding into East Asia under a shared regional brand." } },
+    { id: "k5", ed: "mkd", sec: "econ", mins: 420,
+      fig: { v: "+7%", me: "Noćenja van sezone", en: "Off-season overnight stays" },
+      me: { t: "Ohridski hoteli produžavaju sezonu na zimu", d: "Kongresni turizam i niskobudžetne linije pune hotele i van ljetnjih mjeseci." },
+      en: { t: "Ohrid hotels stretch the season into winter", d: "Conference tourism and low-cost flights are filling rooms outside the summer months." } }
+  ]
+};
